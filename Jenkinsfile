@@ -24,8 +24,8 @@ pipeline {
                 dir('terraform') {
                     withAWS(credentials: 'aws_credentials', region: AWS_REGION) {
                         sh 'rm -rf .terraform .terraform.lock.hcl terraform.tfstate*'
-                        sh 'terraform init'
-                        sh 'terraform apply'
+                        sh 'terraform init -input=false -reconfigure'
+                        sh 'terraform apply -auto-approve'
                         script {
                             env.EC2_PUBLIC_IP = sh(returnStdout: true, script: 'terraform output -raw ec2_public_ip').trim()
                         }
