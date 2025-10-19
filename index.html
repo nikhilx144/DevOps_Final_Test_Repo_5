@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artist Portfolio Gallery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: "Roboto Mono", monospace;
+      }
+
+      header,
+      footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+        background-color: rgb(39, 39, 39);
+        color: white;
+      }
+
+      footer {
+        height: 40px;
+        margin-top: 30px;
+      }
+
+      .category-buttons {
+        /* border: 2px solid black; */
+        display: flex;
+        justify-self: center;
+        justify-content: space-evenly;
+        width: 500px;
+        margin: 20px;
+      }
+
+      button {
+        border: none;
+        border-radius: 20px;
+        padding: 10px;
+        background-color: darkgray;
+        cursor: pointer;
+      }
+
+      button:hover {
+        filter: brightness(0.7);
+        transition: 0.3s ease;
+      }
+
+      button[aria-pressed="true"] {
+        filter: brightness(0.7);
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+      }
+
+      figure {
+        /* border: 2px solid black; */
+        padding: 10px;
+        /* border-radius: 20px; */
+        overflow: hidden;
+      }
+
+      figcaption {
+        margin-bottom: 10px;
+      }
+
+      figure img {
+        height: 100%;
+        width: 100%;
+        /* aspect-ratio: 1 / 1; */
+        /* border-radius: 20px; */
+        /* object-fit: cover; */
+        /* display: block; */
+      }
+
+      .img-2 {
+        grid-column: 3 / 5;
+      }
+
+      .img-3 {
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
+      }
+
+      .img-1 {
+        grid-column: 3 / 5;
+      }
+
+      .img-4 {
+        grid-column: 1 / 3;
+      }
+
+      .img-5 {
+        grid-column: 1 / 5;
+      }
+
+      .img-6 {
+        grid-column: 3 / 5;
+      }
+
+      @media all and (max-width: 768px) {
+        .gallery {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .category-buttons {
+          display: grid;
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+          width: 200px;
+        }
+
+        button {
+          margin: 7px;
+          padding: 10px;
+          width: 10em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>G. Sandhya Nirmal</h1>
+    </header>
+
+    <nav class="category-buttons">
+      <button aria-pressed="false">Portraits</button>
+      <button aria-pressed="false">Oil Paintings</button>
+      <button aria-pressed="false">Modern Art</button>
+      <button aria-pressed="false">Landscapes</button>
+    </nav>
+
+    <main>
+      <section class="gallery">
+        <figure class="img-3">
+          <figcaption>Lord Krishna</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/3.jpg"
+            alt=""
+          />
+        </figure>
+        <figure class="img-2">
+          <figcaption>Girl in a pond</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/2.jpg"
+            alt=""
+          />
+        </figure>
+        <figure class="img-1">
+          <figcaption>Old Women of a Tribe</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/1.jpg"
+            alt=""
+          />
+        </figure>
+        <figure class="img-4">
+          <figcaption>Lion Family</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/4.jpg"
+            alt=""
+          />
+        </figure>
+        <figure class="img-6">
+          <figcaption>Nandi Dev</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/6.jpg"
+            alt=""
+          />
+        </figure>
+        <figure class="img-5">
+          <figcaption>Group of Women</figcaption>
+          <img
+            src="https://raw.githubusercontent.com/nikhilx144/Accelerator_Program/refs/heads/main/5-Day_Practical_Bootcamp/Day1_Tasks/Artist_Portfolio_Gallery/assets/5.jpg"
+            alt=""
+          />
+        </figure>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
