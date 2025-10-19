@@ -26,7 +26,9 @@ pipeline {
                         sh 'rm -rf .terraform .terraform.lock.hcl terraform.tfstate*'
                         sh 'terraform init'
                         sh 'terraform apply'
-                        env.EC2_PUBLIC_IP = sh(returnStdout: true, script: 'terraform output -raw ec2_public_ip').trim()
+                        script {
+                            env.EC2_PUBLIC_IP = sh(returnStdout: true, script: 'terraform output -raw ec2_public_ip').trim()
+                        }
                     }
                 }
             }
