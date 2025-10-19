@@ -60,10 +60,6 @@ resource "aws_instance" "ec2_instance" {
     key_name = aws_key_pair.deployer_key.key_name
     vpc_security_group_ids = [aws_security_group.test_sg.id]
     
-    tags = {
-        Name = "Test_EC2_Instance"
-    }
-
     user_data = <<-EOT
               #!/bin/bash
               # Update all packages
@@ -76,6 +72,11 @@ resource "aws_instance" "ec2_instance" {
               # Add the default user to the docker group
               sudo usermod -a -G docker ec2-user
     EOT
+    
+    tags = {
+        Name = "Test_EC2_Instance"
+    }
+
 }
 
 resource "aws_ecr_repository" "app_repo" {
