@@ -58,31 +58,47 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                script {
-                    def ec2_ip = sh(script: "terraform -chdir=terraform output -raw ec2_public_ip", returnStdout: true).trim()
-
-                    // Wait loop to ensure Docker is ready
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                     sh """
-                        echo 'Waiting for Docker to start on EC2...'
-                        for i in {1..10}; do
-                            if ssh -o StrictHostKeyChecking=no ec2-user@${ec2_ip} 'docker info > /dev/null 2>&1'; then
-                                echo '✅ Docker is ready.'
-                                break
-                            else
-                                echo '⏳ Docker not ready yet... retrying in 10 seconds.'
-                                sleep 10
+                        ssh -o StrictHostKeyChecking=no -i \${SSH_KEY} ec2-user@${env.EC2_PUBLIC_IP} '
+                            echo "🚀 Starting deployment on EC2..."
+
+                            # Wait for Docker to be ready (max 10 attempts, 10s apart)
+                            for i in {1..10}; do
+                                if sudo docker info > /dev/null 2>&1; then
+                                    echo "✅ Docker is ready!"
+                                    break
+                                else
+                                    echo "⏳ Waiting for Docker to start... attempt \$i"
+                                    sleep 10
+                                fi
+                            done
+
+                            # Confirm Docker is indeed running before proceeding
+                            if ! sudo docker info > /dev/null 2>&1; then
+                                echo "❌ Docker did not start after waiting. Exiting..."
+                                exit 1
                             fi
-                        done
-                    """
 
-                    // Proceed with deployment
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@${ec2_ip} \
-                        'docker pull ${ECR_REPO_URI}:${BUILD_NUMBER} && docker run -d -p 80:80 ${ECR_REPO_URI}:${BUILD_NUMBER}'
+                            # Log in to ECR (requires IAM Role on EC2 or credentials)
+                            sudo aws ecr get-login-password --region ${AWS_REGION} | \
+                                sudo docker login --username AWS --password-stdin ${ECR_REPO_URI}
+
+                            # Pull the new image
+                            sudo docker pull ${ECR_REPO_URI}:${BUILD_NUMBER}
+
+                            # Stop and remove old container if it exists
+                            sudo docker stop web-app || true
+                            sudo docker rm web-app || true
+
+                            # Run the new container
+                            sudo docker run -d --name web-app -p 80:80 ${ECR_REPO_URI}:${BUILD_NUMBER}
+
+                            echo "🎉 Deployment successful!"
+                        '
                     """
                 }
             }
         }
-
     }
 }
