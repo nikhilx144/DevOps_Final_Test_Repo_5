@@ -29,6 +29,7 @@ resource "aws_key_pair" "deployer_key" {
 }
 
 resource "aws_iam_role" "ec2_role" {
+    name = "ecr_ec2_role"
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
         Statement = [
